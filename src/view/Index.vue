@@ -22,7 +22,8 @@ export default {
       this.touchShow = true
       setTimeout(() => {
         this.$router.push({
-          path: '/My'
+          // path: '/My'
+          path: '/Map'
         })
       }, 2000)
     }
@@ -35,6 +36,8 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    background: url(../assets/bg1.png);
+    background-size: cover;
   }
   .icon {
     position: absolute;
