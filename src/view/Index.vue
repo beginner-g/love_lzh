@@ -19,7 +19,7 @@ export default {
     }
   },
   created() {
-    this.bgImg = require('../assets/bg1.png')
+    this.bgImg = '../assets/bg1.png'
   },
   methods: {
     go: function() {
