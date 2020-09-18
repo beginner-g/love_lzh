@@ -1,8 +1,8 @@
 <template>
-  <div class="wrap">
-    <div class="goBtn">
+  <div class="wrap" v-if='bgImg' :style="{backgroundImage: 'url('+ bgImg +')', backgroundSize: 'cover'}">
+    <div class="goBtn" @click="go">
       <van-icon name="smile-o" color="#fff" size="47" class="icon"/>
-      <button :class="['goBtn', touchShow ? 'active_btn' : '']" @click="go">Go</button>
+      <button :class="['goBtn', touchShow ? 'active_btn' : '']">Go</button>
     </div>
   </div>
 </template>
@@ -14,8 +14,12 @@ Vue.use(Icon);
 export default {
   data () {
     return {
-      touchShow: false
+      touchShow: false,
+      bgImg: ''
     }
+  },
+  created() {
+    this.bgImg = require('../assets/bg1.png')
   },
   methods: {
     go: function() {
@@ -36,8 +40,7 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: url(../assets/bg1.png);
-    background-size: cover;
+    /* background: url(../assets/bg1.png); */
   }
   .icon {
     position: absolute;

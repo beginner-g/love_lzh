@@ -3,7 +3,7 @@
     <div id="container" class='container'>
     </div>
     <!-- <van-icon class="play-icon" size="40" color="#3EE5D0" name="play-circle-o"/> -->
-    <audio ref="audio" :src="audioUrl" autoplay></audio>
+    <audio ref="audio" :src="audioUrl" autoplay="autoplay" controls hidden="true"></audio>
   </div>
 </template>
 
@@ -14,9 +14,12 @@
     data () {
       return {
         screenHeight: document.documentElement.clientHeight,
-        audioUrl: require('../assets/audio.mp3'),
+        audioUrl: '',
         stu: true
       }
+    },
+    created() {
+      this.audioUrl = require('../assets/audio.mp3')
     },
     mounted() {
       const that = this;
