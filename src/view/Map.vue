@@ -10,6 +10,7 @@
 <script>
   import AMap from 'AMap'
   import imgUrl from '../assets/icon.png'
+  import audio from '../assets/audio.mp3'
   export default {
     data () {
       return {
@@ -19,7 +20,7 @@
       }
     },
     created() {
-      this.audioUrl = require('../assets/audio.mp3')
+      this.audioUrl = audio
     },
     mounted() {
       const that = this;
