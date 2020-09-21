@@ -10,6 +10,7 @@
 <script>
   import AMap from 'AMap'
   import imgUrl from '../assets/icon.png'
+  import imgUrlCar from '../assets/car.png'
   import audio from '../assets/audio.mp3'
   export default {
     data () {
@@ -36,7 +37,7 @@
           alert('当前环境不支持 Canvas！');
           return;
         }
-        console.log(PathSimplifier)
+        // console.log(PathSimplifier)
         //启动页面
         that.initPage(PathSimplifier);
       });
@@ -108,7 +109,7 @@
             // }
           }
         });
-
+        window.pathSimplifierIns = pathSimplifierIns;
         //这里构建两条简单的轨迹，仅作示例
         pathSimplifierIns.setData([{
           name: '测试',
@@ -127,31 +128,68 @@
             [87.61792, 43.793308]
           ]
         }]);
+        var pathNavigatorStyles = [
+          {
+            width: 16,
+            height: 24,
+            content: 'defaultPathNavigator'
+          },
+          {
+            width: 40,
+            height: 40,
+            //使用图片
+            content: PathSimplifier.Render.Canvas.getImageContent(imgUrl, onload, onerror)
+          },
+          {
+            width: 40,
+            height: 40,
+            //使用图片
+            content: PathSimplifier.Render.Canvas.getImageContent(imgUrlCar, onload, onerror)
+          }
+        ]
+        function onload() {
+          pathSimplifierIns.renderLater();
+        }
+        function onerror(e) {
+          alert('图片加载失败！');
+        }
+        function extend(dst) {
+          if (!dst) {
+              dst = {};
+          }
+          var slist = Array.prototype.slice.call(arguments, 1);
+          for (var i = 0, len = slist.length; i < len; i++) {
+            var source = slist[i];
+            if (!source) {
+              continue;
+            }
+            for (var prop in source) {
+              if (source.hasOwnProperty(prop)) {
+                dst[prop] = source[prop];
+              }
+            }
+          }
+          return dst;
+        }
         //创建一个巡航器
         var navg0 = pathSimplifierIns.createPathNavigator(0, //关联第1条轨迹
         {
           loop: true, //循环播放
-          speed: 150000,
-          pathNavigatorStyle: {
-            autoRotate: true, //禁止调整方向
-            pathLinePassedStyle: null,
-            width: 30,
-            height: 30,
-            content: PathSimplifier.Render.Canvas.getImageContent(imgUrl, onload, onerror),
-            strokeStyle: null,
-            fillStyle: null,
-            //经过路径的样式
-            pathLinePassedStyle: {
-              lineWidth: 6,
-              strokeStyle: '#3EE5D0',
-              dirArrowStyle: {
-                stepSpace: 15,
-                strokeStyle: 'red'
-              }
-            }
-          },
+          speed: 200000,
+          pathNavigatorStyle: extend({}, pathNavigatorStyles[0])
         });
         navg0.start();
+        var idx = 0;
+        function changeNavgContent() {
+          //获取到pathNavigatorStyle的引用
+          var pathNavigatorStyle = navg0.getStyleOptions();
+          //覆盖修改
+          extend(pathNavigatorStyle, pathNavigatorStyles[(++idx) % pathNavigatorStyles.length]);
+          //重新绘制
+          pathSimplifierIns.renderLater();
+        }
+        setInterval(changeNavgContent, 500);
+
       },
       // 动态修改样式，实现高度自适应
       changeFixed(clientHeight) {
